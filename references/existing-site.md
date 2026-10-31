@@ -34,6 +34,7 @@ List other problems you notice under Needs from owner, and leave them unfixed un
 
 ## 3. Build it to match
 
+- Refining keeps the site's identity, behaviour and copy, and leaves everything outside the request alone. Redesigning replaces the look but keeps its content and function. Never mix the two, and redesign only when the owner asks.
 - Reuse existing components, tokens, icons and patterns. Add a new one only when nothing fits.
 - A visitor should not be able to tell the new page was added later.
 - Keep to the site's existing language and tone.

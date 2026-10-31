@@ -7,7 +7,7 @@ Use Solo SEO to build a free PDF merger site
 Use Solo SEO to add a word counter tool to my site
 ```
 
-It merges the best open-source SEO, design, content and testing skills into one set of playbooks, so agents have clear instructions without loading dozens of other skills.
+It merges the best open-source SEO, design, motion, content and testing skills into one set of playbooks, so agents have clear instructions without loading dozens of other skills.
 
 ## What it does
 
@@ -15,8 +15,8 @@ It merges the best open-source SEO, design, content and testing skills into one 
 - **Existing sites:** reads the site first, matches its style, stack and language, and updates internal links and navigation.
 - **Free tools:** a one-pass recipe covering design, SEO, content and testing.
 - **Search:** SEO, AEO and GEO guidance, with corrections for retired rich results.
-- **No AI slop:** a standard for UI, UX, content and search, plus automatic checks for AI phrasing and emoji.
-- **Proof before done:** real browser checks, plus a launch checker for broken links, missing tags, schema errors and placeholder text.
+- **No AI slop:** a standard for UI, UX, content and search, plus automatic checks for AI phrasing, emoji, templated metadata and common design habits.
+- **Proof before done:** real browser checks, bad-data testing, and a launch checker for broken links, missing tags, schema errors and SEO regressions.
 - **Memory:** a `SITE.md` file lets any agent continue the work in any session.
 - **Current docs:** agents check official docs for the versions in use.
 
@@ -49,7 +49,7 @@ node ~/.agents/skills/solo-seo/scripts/install.mjs
 | `references/phases.md` | Checklist for each phase |
 | `references/existing-site.md` | Process for adding to a site |
 | `references/playbook-seo.md` | SEO, AEO, GEO, schema and pages at scale |
-| `references/playbook-design.md` | UI, UX, accessibility and speed |
+| `references/playbook-design.md` | UI, UX, motion, stress testing, accessibility and speed |
 | `references/playbook-content.md` | Copy, articles, conversion and AI writing tells |
 | `references/playbook-tools.md` | One-pass free tool recipe |
 | `references/site-types.md` | Landing page, content, directory and monetization notes |

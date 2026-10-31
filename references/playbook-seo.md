@@ -113,13 +113,14 @@ Use this for "X vs Y", "X alternatives" and "best X" pages.
 
 ## AEO and GEO are still SEO
 
-Google says that optimizing for generative AI search "is optimizing for the search experience, and thus still SEO". For Google, you don't need `llms.txt`, chunked content, special phrasing or AI-specific markup. AI features run on the same ranking and quality systems, so everything above comes first. The habits below help readers and other AI systems too.
+Google says that optimizing for generative AI search "is optimizing for the search experience, and thus still SEO". For Google, you don't need `llms.txt`, chunked content, special phrasing or AI-specific markup. AI features run on the same ranking and quality systems, so everything above comes first. Skip near-duplicate pages for every query variation, rewrites made only for AI, and manufactured mentions. The test is whether the page satisfies a visitor without another search. The habits below help readers and other AI systems too.
 
 ## AEO: being the quoted answer
 
 - Collect real questions from People Also Ask, forums and support channels.
 - Use a question as the heading, then answer directly in the first 40 to 60 words.
-- Write each answer to make sense alone. Name the subject, because "it" and "this" lose meaning when quoted.
+- Write each answer to make sense alone. Name the subject, because "it" and "this" lose meaning when quoted. Avoid opening with "But" or "However".
+- Include a specific fact, date or named source in key answers.
 - Follow the short answer with detail, examples and edge cases.
 - Use real HTML lists, steps and tables for steps and comparisons.
 - Open tool and concept pages with a plain "X is..." definition.
@@ -201,6 +202,20 @@ Use this for tool variants, directories, comparisons, locations and glossaries.
 - **Stronger data wins:** your own data beats user data, which beats licensed data, which beats public data.
 - **Rollout:** publish 50 to 100 pages, review a 5 to 10% sample, watch indexing for 2 to 4 weeks, then expand. Get the owner's approval before publishing more than 500.
 - **Risky patterns:** swapped city names, "[competitor] alternative" without real comparisons, and unreviewed AI pages. Google treats these as scaled content abuse.
+
+## Astro setup
+
+- Set `site` in `astro.config` to the production URL first. Canonicals, the sitemap and OG URLs all depend on it, and a missing value is the most common Astro SEO mistake.
+- Put all head tags in one SEO component, with a fallback chain: SEO title, then page title, then site name. Consider `@jdevalk/astro-seo-graph` for this, after checking its current docs.
+- Enforce title and description lengths with Zod schemas in content collections, so errors fail the build.
+- Add `max-snippet:-1, max-image-preview:large` to the robots meta on indexable pages.
+- Omit the canonical on `noindex` pages.
+- Link schema entities in one `@graph` using `@id` references.
+- Use JPEG or PNG for OG images at 1200 pixels wide or more, because social platforms don't reliably support WebP or AVIF. Generate them at build time.
+- Take sitemap `lastmod` from git commit dates, not the build time.
+- Split large sitemaps by collection, so indexing problems are easier to find.
+- Publish a full-content RSS feed on content sites, and link it from the head.
+- Submit to IndexNow only from production builds, using `VERCEL_ENV === 'production'`. Submissions from local or preview builds can invalidate the key.
 
 ## Before and after each deploy
 

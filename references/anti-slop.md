@@ -14,7 +14,7 @@ A strong result has:
 - Real product screenshots or custom SVG and code-built graphics. Use a simple typographic layout when none exist.
 - Motion only where it explains something, such as a state change or the result of an action.
 
-Signs of slop to replace: purple-to-blue gradients, gradient headline text, glassmorphism cards, glowing blobs, three equal icon cards, centred everything, a pill badge above every hero headline, emoji as icons, default shadcn or Tailwind looks, stock people smiling at laptops, fade-up on every scroll.
+Signs of slop to replace: purple-to-blue gradients, gradient headline text, decorative glass and blur, glowing blobs, three equal icon cards, nested cards, centred everything, a small label or pill above every heading, the big-number-and-small-label stats row, 01/02/03 section numbers without a real sequence, thick coloured left borders on cards and alerts, hard offset shadows, mono fonts as a "technical" costume, emoji or Unicode symbols as icons, default shadcn or Tailwind looks, stock people smiling at laptops, fade-up on every scroll.
 
 ## UX
 

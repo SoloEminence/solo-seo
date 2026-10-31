@@ -155,6 +155,10 @@ for (const file of pages) {
   }
   if (page === '/index.html' && blocks.length === 0) error(page, 'home page has no JSON-LD');
 
+  if (/href=["'][^"']*(localhost|127\.0\.0\.1)/i.test(tags(html, 'link').join(' '))) error(page, 'head link points to localhost, set site in astro.config');
+  const ogImage = metaContent(html, 'og:image');
+  if (ogImage && /\.(webp|avif)(\?|$)/i.test(ogImage)) warn(page, 'og:image is WebP or AVIF, use JPEG or PNG for social platforms');
+
   snapshot[page] = {
     title: title ?? '',
     description: description ?? '',
@@ -183,6 +187,20 @@ for (const [label, map] of [['title', titles], ['description', descriptions]]) {
     if (where.length > 1) error(where.join(', '), `duplicate ${label}: "${value.slice(0, 60)}"`);
   }
 }
+
+// Design habits that are easy to detect in the built CSS.
+const inlineCss = pages.flatMap((file) => [...readFileSync(file, 'utf8').matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/gi)].map((m) => m[1]));
+const css = [...files.filter((f) => f.endsWith('.css')).map((f) => readFileSync(f, 'utf8')), ...inlineCss].join('\n');
+const designChecks = [
+  [/transition(-property)?\s*:\s*all\b/i, 'transition on all properties, name the exact ones'],
+  [/background-clip\s*:\s*text/i, 'gradient text found, use weight or size for emphasis'],
+  [/transform\s*:\s*scale\(0\)/i, 'animation from scale(0), start at 0.95 with opacity'],
+];
+for (const [pattern, message] of designChecks) {
+  if (pattern.test(css)) warn('css', message);
+}
+if (css && !/::selection/.test(css)) warn('css', 'text selection is unstyled');
+if (css && !/prefers-reduced-motion/.test(css) && /(transition|animation)\s*:/.test(css)) warn('css', 'motion found without prefers-reduced-motion');
 
 // Unique descriptions can still share one generated shape.
 for (const { page, title, description } of metaPairs) {

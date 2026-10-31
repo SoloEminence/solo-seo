@@ -25,7 +25,7 @@ Follow Keyword research and Site structure in `playbook-seo.md`.
 
 ## 3. Design
 
-Follow `playbook-design.md`, sections 1 to 6.
+Follow `playbook-design.md`, sections 1 to 8.
 
 - Pick one clear visual direction drawn from the subject, using the UI and UX standards in `anti-slop.md`.
 - Write `DESIGN.md`: palette, type scale, spacing, radius, motion rules, component notes.
@@ -51,14 +51,16 @@ Before scaffolding, read the official install guides for Astro, its Vercel deplo
 npm create astro@latest . -- --template minimal --typescript strict --no-install --no-git --yes
 npm install
 npx astro add tailwind sitemap --yes
+npm install -D @astrojs/check typescript
 ```
 
 Check current flags with `--help` if a command fails.
 
 If Astro rejects the Node version, install Node 24 in the project and leave the system Node alone: run `npm install -D node@24`, then use `npx astro` and `npm run` as usual. Record it in `SITE.md`, and add `"engines": { "node": "24.x" }` to `package.json` so Vercel matches.
 
-- Set `site` in `astro.config` to the production URL. Canonicals and the sitemap depend on it.
+- Follow Astro setup in `playbook-seo.md`, starting with `site` in `astro.config`.
 - Create one shared layout that handles title, description, canonical, Open Graph, Twitter card and JSON-LD through props.
+- Build each interactive part with every state and bad-data case from sections 9 and 10 of `playbook-design.md`.
 - Use semantic HTML with one `h1` per page and no skipped heading levels.
 - Use Astro `<Image>` or AVIF/WebP with explicit width and height. Use `loading="lazy"` below the fold and never on the hero image.
 - Self-host fonts, subset them, and preload at most two.
@@ -77,13 +79,14 @@ Follow `playbook-seo.md`, and apply the SEO, AEO and GEO standards in `anti-slop
 - Add a short `/llms.txt` with links to key pages. It's optional, so keep it quick.
 - Make each main section answer one question plainly in its first two sentences.
 - Link related pages to each other with descriptive anchor text. Every page should be reachable within three clicks of home.
-- Create a 1200x630 OG image for the site, and per-page ones for important pages.
+- Create a 1200x630 OG image in JPEG or PNG for the site, and per-page ones for important pages.
 
 ## 7. Quality gates
 
 Run all of these on a production build. Record results in `SITE.md`.
 
 ```bash
+npx astro check
 npm run build
 node <skill-dir>/scripts/check-site.mjs dist
 ```
@@ -92,10 +95,12 @@ node <skill-dir>/scripts/check-site.mjs dist
 
 1. **Automated check:** `check-site` exits 0. Review its warnings too.
 2. **Browser:** with Playwright or the agent's browser tool, open every page template at 375px and 1280px. Confirm no horizontal scroll, no console errors, and working nav, forms and tools. Look at the screenshots rather than assuming.
-3. **Accessibility (WCAG 2.2 AA):** run axe if available, then complete section 9 of `playbook-design.md`, including keyboard and `prefers-reduced-motion` checks.
+3. **Accessibility (WCAG 2.2 AA):** run axe if available, then complete section 12 of `playbook-design.md`, including keyboard and `prefers-reduced-motion` checks.
 4. **Speed:** run Lighthouse on home and the heaviest page, mobile preset. Targets: 90+ in all categories, LCP under 2.5s, CLS under 0.1, INP under 200ms.
 5. **Security:** `npm audit --omit=dev` shows no high or critical issues. No secrets in the repo or built output. User input is validated and escaped. Security headers (CSP, HSTS, `X-Content-Type-Options`, `Referrer-Policy`) are set in `vercel.ts` or `vercel.json`.
 6. **Slop:** complete the final slop pass in `anti-slop.md`.
+
+Add a GitHub Actions workflow that runs `astro check`, the build, `check-site` and `npm audit` on every push, so later changes can't quietly break these checks. Copy `<skill-dir>/scripts/check-site.mjs` into the project's `scripts/` folder so the workflow can run it. Vercel's GitHub app can handle deployment.
 
 ## 8. Launch
 
