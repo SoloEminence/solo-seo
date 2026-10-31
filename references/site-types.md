@@ -33,6 +33,10 @@ Follow `playbook-tools.md`, which covers everything from research to testing for
 - Launch in batches: start with the best 50 to 100 pages, check indexing, then expand.
 - Schema: `ItemList` on hubs, `BreadcrumbList` everywhere, and the matching item type on detail pages.
 
+## Comparison and alternatives pages
+
+Follow Comparison pages in `playbook-seo.md`.
+
 ## Monetization
 
 Add this only when the owner asks, usually after the site is built.

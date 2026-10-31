@@ -15,6 +15,8 @@ Before changing anything, read the code and run the site. Find out and record in
 
 If there's no `SITE.md`, create one from the template and fill in only the sections that apply. Check the docs for the versions this project uses, which may be older than the latest.
 
+If the site builds to static files, build it and save an SEO baseline before changing anything: `node <skill-dir>/scripts/check-site.mjs <build-folder> --save-baseline .seo-baseline.json`.
+
 ## 2. Plan the change
 
 Write a short plan in `SITE.md`: what's being added, its URL and keyword, the files involved, and the related changes it needs.
@@ -41,7 +43,7 @@ List other problems you notice under Needs from owner, and leave them unfixed un
 ## 4. Check it
 
 - Run the project's own lint, type check, tests and build.
-- Run `node <skill-dir>/scripts/check-site.mjs <build-folder>` if the site builds to static files. Fix every issue caused by this work, and list older issues under Needs from owner.
+- Run `node <skill-dir>/scripts/check-site.mjs <build-folder> --compare .seo-baseline.json` if the site builds to static files. Fix every issue caused by this work, and list older issues under Needs from owner.
 - Test the new work in a browser at 375px and 1280px, then check the home page and one related page for regressions.
 
 ## 5. Save and ship

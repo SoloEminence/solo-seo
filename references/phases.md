@@ -73,10 +73,9 @@ Follow `playbook-seo.md`, and apply the SEO, AEO and GEO standards in `anti-slop
 
 - Every indexable page has a unique title (under 60 characters) and description (under 160).
 - Add JSON-LD: `Organization` and `WebSite` on the home page, plus the type-specific schema in `site-types.md`. Mark up only what is visible on the page.
-- Add `FAQPage` schema only if it matches visible FAQs, knowing Google rarely shows these rich results.
-- Check that `sitemap-index.xml` is generated and `robots.txt` links to it. Allow AI crawlers unless the owner objects.
-- Add `/llms.txt` with a short summary and links to key pages.
-- Make each main section answer one question plainly in its first two sentences, so AI search can quote it.
+- Check that `sitemap-index.xml` is generated and `robots.txt` links to it. Allow AI search crawlers, and ask the owner before blocking training crawlers.
+- Add a short `/llms.txt` with links to key pages. It's optional, so keep it quick.
+- Make each main section answer one question plainly in its first two sentences.
 - Link related pages to each other with descriptive anchor text. Every page should be reachable within three clicks of home.
 - Create a 1200x630 OG image for the site, and per-page ones for important pages.
 

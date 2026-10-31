@@ -4,7 +4,7 @@ The playbooks are original summaries that combine ideas from these open-source p
 
 | Project | Author | Licence | Used for |
 |---|---|---|---|
-| [claude-seo](https://github.com/AgriciDaniel/claude-seo) | AgriciDaniel | MIT | Technical SEO, GEO, planning, pages at scale |
+| [claude-seo](https://github.com/AgriciDaniel/claude-seo) v2.5.0 | AgriciDaniel and contributors, including Florian Schmitz (SXO), Lutfiya Miller (clustering) and Dan Colta (drift) | MIT | Technical SEO, GEO, crawler guidance, schema status, page-type matching, SERP clustering, E-E-A-T, comparison pages, hreflang, agent readiness, deploy comparison, quality gates |
 | [web-quality-skills](https://github.com/addyosmani/web-quality-skills) | Addy Osmani | MIT | On-page SEO, schema basics, AI search notes |
 | [marketingskills](https://github.com/coreyhaines31/marketingskills) | Corey Haines | MIT | Programmatic SEO, site structure |
 | [taste-skill](https://github.com/Leonxlnx/taste-skill) | Leonxlnx | MIT | Design dials, AI design tells, UI states |

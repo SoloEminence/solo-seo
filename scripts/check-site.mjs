@@ -1,11 +1,24 @@
 #!/usr/bin/env node
 // Launch check for a built static site. No dependencies.
-// Usage: node check-site.mjs [build-dir]   (default: dist)
-// Exits 1 if any error is found. Warnings don't fail the check.
-import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
+// Usage: node check-site.mjs [build-dir] [--save-baseline file] [--compare file]
+// Default build-dir is dist. Exits 1 if any error is found. Warnings don't fail the check.
+import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative, resolve, sep } from 'node:path';
 
-const root = resolve(process.argv[2] ?? 'dist');
+const args = process.argv.slice(2);
+const option = (name) => {
+  const index = args.indexOf(name);
+  if (index === -1) return null;
+  const [value] = args.splice(index, 2).slice(1);
+  if (!value) {
+    console.error(`${name} needs a file path.`);
+    process.exit(2);
+  }
+  return value;
+};
+const baselineOut = option('--save-baseline');
+const baselineIn = option('--compare');
+const root = resolve(args[0] ?? 'dist');
 if (!existsSync(root) || !statSync(root).isDirectory()) {
   console.error(`Build folder not found: ${root}\nRun the build first, or pass the folder path.`);
   process.exit(2);
@@ -64,6 +77,21 @@ if (pages.length === 0) error('site', 'no HTML pages found');
 const titles = new Map();
 const descriptions = new Map();
 const addTo = (map, key, page) => map.set(key, [...(map.get(key) ?? []), page]);
+const snapshot = {};
+const metaPairs = [];
+
+function schemaTypes(json) {
+  const found = [];
+  const visit = (node) => {
+    if (Array.isArray(node)) node.forEach(visit);
+    else if (node && typeof node === 'object') {
+      found.push(...[node['@type']].flat().filter(Boolean));
+      if (node['@graph']) visit(node['@graph']);
+    }
+  };
+  visit(json);
+  return found;
+}
 
 for (const file of pages) {
   const page = '/' + relative(root, file).split(sep).join('/');
@@ -75,6 +103,7 @@ for (const file of pages) {
   if (/<meta[^>]+http-equiv=["']?refresh/i.test(html)) continue;
   const indexable = !is404 && !robots.includes('noindex');
 
+  if (Buffer.byteLength(html) > 2_000_000) warn(page, 'HTML over 2 MB, Googlebot may not read past that');
   if (!/<!doctype html>/i.test(html)) warn(page, 'missing doctype');
   if (!attr(tags(html, 'html')[0] ?? '', 'lang')) error(page, 'missing lang on <html>');
   if (!metaContent(html, 'viewport')) error(page, 'missing viewport meta');
@@ -95,6 +124,7 @@ for (const file of pages) {
       addTo(descriptions, description, page);
       if (description.length > 160) warn(page, `description is ${description.length} characters (aim for 160 or fewer)`);
       if (description.length < 50) warn(page, `description is only ${description.length} characters`);
+      metaPairs.push({ page, title, description });
     }
     if (!hasRel(html, 'canonical')) error(page, 'missing canonical link');
     if (!metaContent(html, 'og:title')) error(page, 'missing og:title');
@@ -115,19 +145,31 @@ for (const file of pages) {
   }
 
   const blocks = [...html.matchAll(/<script\b[^>]*type=["']?application\/ld\+json["']?[^>]*>([\s\S]*?)<\/script>/gi)];
+  const types = [];
   for (const [, json] of blocks) {
     try {
-      JSON.parse(json);
+      types.push(...schemaTypes(JSON.parse(json)));
     } catch {
       error(page, 'invalid JSON-LD');
     }
   }
   if (page === '/index.html' && blocks.length === 0) error(page, 'home page has no JSON-LD');
 
+  snapshot[page] = {
+    title: title ?? '',
+    description: description ?? '',
+    canonical: attr(tags(html, 'link').find((t) => (attr(t, 'rel') ?? '').toLowerCase() === 'canonical') ?? '', 'href') ?? '',
+    h1: visible.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/i)?.[1].replace(/<[^>]+>/g, '').trim() ?? '',
+    noindex: robots.includes('noindex'),
+    schema: [...new Set(types)].sort(),
+  };
+
   const text = visible.replace(/<[^>]+>/g, ' ');
   const leftover = text.match(/lorem ipsum|\bTODO\b|\bFIXME\b|coming soon|your (company|name|tagline) here/i);
   if (leftover) error(page, `placeholder text: "${leftover[0]}"`);
   if (/\b(href|src)=["']https?:\/\/(www\.)?example\.(com|org)/i.test(visible)) error(page, 'link to example.com');
+
+  if (/[​‌‎‏⁠‪-‮\u{E0000}-\u{E007F}]/u.test(text)) warn(page, 'invisible Unicode characters in page text');
 
   const emoji = text.match(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu);
   if (emoji) warn(page, `emoji in page text, use SVG icons: ${[...new Set(emoji)].slice(0, 5).join(' ')}`);
@@ -140,6 +182,49 @@ for (const [label, map] of [['title', titles], ['description', descriptions]]) {
   for (const [value, where] of map) {
     if (where.length > 1) error(where.join(', '), `duplicate ${label}: "${value.slice(0, 60)}"`);
   }
+}
+
+// Unique descriptions can still share one generated shape.
+for (const { page, title, description } of metaPairs) {
+  if (title && description.toLowerCase().startsWith(title.toLowerCase())) warn(page, 'description opens by repeating the title');
+}
+if (metaPairs.length >= 4) {
+  const endings = new Map();
+  for (const { page, description } of metaPairs) {
+    const sentences = description.split(/(?<=[.!?])\s+/);
+    if (sentences.length > 1) addTo(endings, sentences.at(-1).toLowerCase(), page);
+  }
+  for (const [ending, where] of endings) {
+    if (where.length >= 3 && where.length >= metaPairs.length / 2) warn('site', `${where.length} descriptions end with the same sentence: "${ending}"`);
+  }
+}
+
+if (baselineIn) {
+  if (!existsSync(baselineIn)) {
+    console.error(`Baseline not found: ${baselineIn}`);
+    process.exit(2);
+  }
+  const before = JSON.parse(readFileSync(baselineIn, 'utf8'));
+  for (const [page, old] of Object.entries(before)) {
+    const now = snapshot[page];
+    if (!now) {
+      error(page, 'page removed since baseline, add a redirect if this is intended');
+      continue;
+    }
+    if (now.noindex && !old.noindex) error(page, 'noindex added since baseline');
+    if (now.canonical !== old.canonical) error(page, `canonical changed: "${old.canonical}" to "${now.canonical}"`);
+    const lost = old.schema.filter((type) => !now.schema.includes(type));
+    if (lost.length) error(page, `schema removed since baseline: ${lost.join(', ')}`);
+    for (const field of ['title', 'description', 'h1']) {
+      if (now[field] !== old[field]) warn(page, `${field} changed: "${old[field].slice(0, 60)}" to "${now[field].slice(0, 60)}"`);
+    }
+  }
+  const added = Object.keys(snapshot).filter((page) => !before[page]);
+  if (added.length) console.log(`New pages since baseline: ${added.join(', ')}`);
+}
+if (baselineOut) {
+  writeFileSync(baselineOut, JSON.stringify(snapshot, null, 2));
+  console.log(`Saved baseline for ${Object.keys(snapshot).length} pages: ${baselineOut}`);
 }
 
 const has = (...names) => names.some((name) => existsSync(join(root, name)));

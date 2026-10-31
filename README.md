@@ -63,6 +63,13 @@ node ~/.agents/skills/solo-seo/scripts/install.mjs
 node scripts/check-site.mjs dist
 ```
 
+Compare two builds to catch SEO regressions:
+
+```bash
+node scripts/check-site.mjs dist --save-baseline .seo-baseline.json
+node scripts/check-site.mjs dist --compare .seo-baseline.json
+```
+
 ## Credits
 
 Built on the work listed in [CREDITS.md](CREDITS.md). Licensed under [MIT](LICENSE).

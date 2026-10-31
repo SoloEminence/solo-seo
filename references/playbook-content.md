@@ -49,14 +49,39 @@ Use the sections that fit, in this order:
 
 Let the question set the length. Use a real author and only claims that person could stand behind.
 
-## Trust signals
+## Who, how and why
 
+Check every important page against Google's helpful content questions:
+
+- **Who** made it? Show a real byline where readers would expect one.
+- **How** was it made? Show the testing, data or process behind it.
+- **Why** does it exist? It should help people first, not just catch clicks.
+
+## Trust signals (E-E-A-T)
+
+Google says trust matters most, supported by the other three:
+
+- **Trust:** dates, corrections, contact details, privacy policy, and honest limits.
 - **Experience:** what was tried, measured or observed.
 - **Expertise:** accurate detail and correct terms, explained simply.
-- **Authority:** real credentials and sources.
-- **Trust:** dates, corrections, contact details, and honest limits.
+- **Authority:** real credentials, sources and mentions.
 
-Experience can't be invented. If nobody tested something, don't write as if they did.
+Experience can't be invented. If nobody tested something, don't write as if they did. Health, money, legal and safety topics need extra care, with qualified authors and primary sources.
+
+AI-assisted content is fine when it's accurate, reviewed and adds something new. Scaled, generic or repetitive pages are the problem, however they were made.
+
+## Length
+
+Word count isn't a ranking factor. Use these as coverage checks, and stop when the topic is covered:
+
+| Page | Usual coverage |
+|---|---|
+| Home or category | 400 to 500 words |
+| Landing or service page | 600 to 800 words |
+| Article | Around 1,500 words |
+| Pillar page | 2,500 words or more |
+
+Free tool pages can be shorter when the tool does the job. Readability scores aren't ranking factors either, so use them only to spot hard-to-read text.
 
 ## Conversion check
 

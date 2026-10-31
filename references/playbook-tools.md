@@ -6,7 +6,7 @@ The one-pass recipe for building a free tool, combining design, SEO, AEO, GEO, c
 
 Record in `SITE.md`:
 
-- Primary keyword and search intent, checked against the live results.
+- Primary keyword and search intent, checked against the live results. If the top results aren't tools, rethink the page type.
 - URL, in the form `/tools/<name>/` or the pattern the site already uses.
 - Inputs, outputs, limits and edge cases.
 - What top competitors do badly: ads, sign-ups, speed, mobile, limits.
@@ -65,8 +65,8 @@ Check the platform's terms first and tell the owner about the risk. Stick to pub
 
 ## 6. Mark it up
 
-- Title: `<Keyword> - Free Online Tool | <Brand>`, varied so it doesn't match other tool pages.
-- Schema: `WebApplication` with a free offer and `BreadcrumbList`. Add `FAQPage` only for visible FAQs. Leave out ratings unless they're real.
+- Title and description written for this tool, saying what it does best. Avoid one repeated pattern across all tool pages.
+- Schema: `WebApplication` with a free offer and `BreadcrumbList`. Leave out ratings unless they're real, and skip `FAQPage`, which no longer earns a Google rich result.
 - Add the tool to navigation, the tools hub, sitemap, `llms.txt` and related tool blocks.
 - Add at least two links from existing pages.
 - If the site has several languages, add this page to each with hreflang.

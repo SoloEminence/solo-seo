@@ -1,6 +1,8 @@
 # SEO, AEO and GEO playbook
 
-Complete instructions for search work, so no other SEO skill is needed. Search rules change, so confirm anything time-sensitive in Google Search Central before relying on it.
+Complete instructions for search work, so no other SEO skill is needed. Search rules change, so confirm anything time-sensitive in Google Search Central before relying on it. Facts here were last checked on 2026-10-31.
+
+Scores are heuristics. Nobody outside Google has its ranking data, so never promise rankings, citations or traffic. When community advice conflicts with Google's own docs, follow Google.
 
 ## Keyword research
 
@@ -13,21 +15,47 @@ Use the best source available, in this order:
 
 If the owner says to handle it yourself, use whatever is available without asking. Label free research as estimates, with no invented volumes or difficulty scores.
 
-For each keyword, read the live results before planning a page. The result types show the intent: tools, guides, lists, products or videos. Build the page type Google already rewards. New sites should start with specific long-tail terms that have weak results, then move up to broader terms.
+Expand each seed into 30 to 50 variants using related searches, People Also Ask, question words, and modifiers such as "free", "how to", "vs", "best", "examples" and "alternative". Drop navigational terms. New sites should start with specific long-tail terms that have weak results, then move up to broader terms.
+
+### Match the results page
+
+A technically perfect page won't rank if it's the wrong type. For each main keyword, classify the top 10 results by page type and format:
+
+- Over 60% one type: build that type.
+- 40 to 60%: mixed intent, so serve the leading type and cover the second.
+- Under 40%: no clear winner, which leaves room to stand out.
+
+Also note the expected depth, media, People Also Ask questions, ad themes and whether an AI Overview appears. Turn these into three to five user stories: "As a [person], I want [goal], because [reason], but I'm blocked by [barrier]." Build the page to resolve those barriers, then check it as each person: relevant, clear within 10 seconds, trustworthy, and with an obvious next step.
+
+### Group keywords by shared results
+
+Group by how Google ranks keywords, not by similar wording. Compare the top 10 URLs of two keywords:
+
+| Shared URLs | Action |
+|---|---|
+| 7 to 10 | Same page |
+| 4 to 6 | Same cluster |
+| 2 to 3 | Separate pages, linked to each other |
+| 0 to 1 | Separate topics |
+
+Pre-group by intent so you only compare likely pairs.
 
 ## Site structure
 
 - Plan one page per intent. Merge pages that would rank for the same query.
 - Keep URLs lowercase, hyphenated, short and free of parameters. Use subfolders, not subdomains.
 - Use one trailing-slash style across the site.
-- Use hub pages that link to related pages, with those pages linking back and to each other.
+- Use a pillar page for each topic, with two to five clusters of supporting pages.
+- Every supporting page links to its pillar and back, plus two or three links to pages in the same cluster.
 - Keep every important page within 3 clicks of home, with no orphan pages.
-- Use descriptive anchor text. Give each new page links from at least 2 existing pages.
+- Use varied, descriptive anchor text inside the body copy. Give each new page at least 3 incoming links once enough pages exist.
+- Give paginated lists crawlable links and self-referencing canonicals. Google ignores `rel=next/prev`.
 
 ## On-page checklist
 
 - Title under 60 characters: main keyword early, brand at the end.
-- Meta description of 140 to 160 characters that states the page's value honestly.
+- Meta description of 120 to 160 characters that states the page's value honestly.
+- Metadata written for each page. Unique strings that share one template, such as the title followed by a stock CTA, still count as templated.
 - One `h1`, then `h2` and `h3` in order, with headings that describe the section.
 - Keyword in the title, `h1`, first paragraph and a subheading, where it reads naturally. Ignore keyword density.
 - Self-referencing canonical on every indexable page.
@@ -42,6 +70,12 @@ For each keyword, read the live results before planning a page. The result types
 - `noindex` on thin or utility pages, removed from the sitemap. Never block those same pages in `robots.txt`, because crawlers must fetch a page to see its `noindex`.
 - Correct status codes: real 404s, 301s for moved pages, no redirect chains.
 - Core Web Vitals at the 75th percentile: LCP under 2.5s, INP under 200ms, CLS under 0.1.
+- Same main content, metadata and schema on mobile and desktop, because Google indexes the mobile version.
+- Key content visible on load, not hidden behind tabs or accordions.
+- Key content and JSON-LD within the first 2 MB of HTML, the most Googlebot fetches. Watch for inline images and large inline scripts.
+- No intrusive interstitials, heavy ad density or back-button hijacking. Google's spam policies now cover back-button hijacking, including when ad scripts cause it.
+- `robots.txt` never returns a 5xx error, which crawlers treat as "disallow everything".
+- Allow up to two weeks for canonical fixes to show.
 
 ## Schema
 
@@ -55,13 +89,31 @@ Use JSON-LD in the initial HTML and mark up only what's visible on the page. Use
 | Any page with visible breadcrumbs | `BreadcrumbList` |
 | Hub or list page | `ItemList` |
 | Real product for sale | `Product` with visible price and availability |
+| Author page | `ProfilePage` with a `Person` |
+| Community Q&A on one question | `QAPage` |
 
 Limits to remember:
 
-- Google no longer shows HowTo rich results or the sitelinks search box.
-- FAQ rich results are limited to well-known health and government sites. `FAQPage` markup may still help machines read the page, so add it only for real, visible FAQs.
+- Google no longer shows FAQ rich results (retired May 2026), HowTo rich results or the sitelinks search box. Don't add `FAQPage` or `HowTo` for a Google benefit. Existing FAQ markup can stay, since other search engines may use it.
+- Structured data isn't required for AI features, and no special AI markup exists.
 - Software rating stars need genuine ratings or reviews. Skip them rather than invent any.
 - Skip self-serving reviews on your own organization or product.
+- Use absolute URLs, ISO 8601 dates and `https://schema.org` as the context.
+
+## Comparison pages
+
+Use this for "X vs Y", "X alternatives" and "best X" pages.
+
+- Verify every feature and price from public sources, and link to them.
+- Date prices with "as of", and write "not publicly available" for anything missing.
+- Disclose which product is yours, state how you compared, and show where rivals win.
+- Lead with a short verdict by use case, then a feature table.
+- Show hidden costs, and keep CTAs out of competitor sections.
+- Review these pages quarterly, and link between related comparisons.
+
+## AEO and GEO are still SEO
+
+Google says that optimizing for generative AI search "is optimizing for the search experience, and thus still SEO". For Google, you don't need `llms.txt`, chunked content, special phrasing or AI-specific markup. AI features run on the same ranking and quality systems, so everything above comes first. The habits below help readers and other AI systems too.
 
 ## AEO: being the quoted answer
 
@@ -76,31 +128,67 @@ Limits to remember:
 
 No signal here is guaranteed. These are the habits with the best evidence:
 
-- Rank in normal search first. AI Overviews mainly draw on pages that already rank well.
+- Rank in normal search first. AI Overviews mainly draw on pages that already rank well, while AI Mode cites a broader set of pages.
 - Publish things worth citing: original data, tests, clear definitions and unique tools.
-- Keep key sections self-contained. About 130 to 170 words is a good length, but never pad to reach it.
+- Put your most useful answer high on the page.
 - Attribute claims to primary sources, and show real authors and updated dates.
+- Refresh important pages when facts change. Third-party studies link recency with citations, but changing a date alone adds nothing.
 - Serve main content without JavaScript. Many AI crawlers don't run it.
 - Keep brand facts consistent, and use `sameAs` links to real profiles.
 - Be present where AI systems look: Reddit, YouTube, Wikipedia, LinkedIn and review sites. This needs real participation, so list opportunities for the owner instead of faking mentions.
-- `llms.txt` is optional and unproven. Spend five minutes on it and no more.
+- `llms.txt` is optional. Google Search doesn't use it, and no major provider has confirmed using it. Spend five minutes on it and no more.
 
 ### AI crawlers in robots.txt
 
-Allow search crawlers so the site can be cited. Blocking training crawlers is the owner's choice.
+Allow search crawlers so the site can be cited. Blocking training crawlers is the owner's choice, so ask before adding those rules. Report each crawler separately, because access for training says nothing about access for search.
 
 | Crawler | Used for |
 |---|---|
-| Googlebot | Google Search and AI Overviews |
+| Googlebot | Google Search, AI Overviews and AI Mode |
 | Bingbot | Bing and Copilot |
-| OAI-SearchBot, ChatGPT-User | ChatGPT search and live fetching |
+| OAI-SearchBot | ChatGPT search citations |
+| ChatGPT-User | User-triggered ChatGPT fetches |
 | GPTBot | OpenAI model training |
-| PerplexityBot, Perplexity-User | Perplexity search and fetching |
-| Claude-SearchBot, Claude-User | Claude search and fetching |
+| Claude-SearchBot | Claude search citations |
+| Claude-User | User-triggered Claude fetches |
 | ClaudeBot | Anthropic model training |
-| Google-Extended | Gemini training only. It has no effect on Search |
+| PerplexityBot | Perplexity search index |
+| Perplexity-User | User-triggered Perplexity fetches |
+| Applebot-Extended | Apple AI training opt-out. Siri and Spotlight follow Applebot |
+| Google-Extended | Limits AI training and grounding in other Google systems. It has no effect on Search |
 
-Crawler names change, so check each vendor's docs before writing rules.
+Some user-triggered fetchers ignore `robots.txt`, so protect private pages with authentication. To limit what appears in Google's AI features, use `nosnippet`, `data-nosnippet`, `max-snippet` or `noindex`. Crawler names change, so check each vendor's docs before writing rules.
+
+## Readiness for AI agents
+
+AI agents now browse sites and fill in forms for people. Good accessibility and speed cover most of this:
+
+- Accessible names and valid roles on every control, with nothing interactive hidden from the accessibility tree.
+- CLS at or under 0.1, because moving elements break agent clicks.
+- Main content in the HTML, and real 404 status codes for unknown URLs.
+- No CAPTCHA on public content, and a firewall that lets verified search bots through.
+- Stable, visible confirmation after actions, with no hover-only menus or focus traps.
+
+Lighthouse has an Agentic Browsing category, reported as a fraction such as 4/6. Treat that as a check, not a goal. WebMCP, `ai-catalog.json` and similar standards are still early, so add them only for sites with real transactions, and keep a human confirmation step on purchases, sends and deletes.
+
+## Multiple languages
+
+- Every page lists all language versions, including itself, and each version links back.
+- `hreflang` URLs must match canonicals exactly, on the same protocol and slash style.
+- Use ISO codes: `en`, `pt-BR`, `zh-Hant`. Common errors are `en-uk`, `jp` and `es-LA`.
+- Add `x-default` when there's a fallback or language selector.
+- Use `<link>` tags for small sites, and the sitemap for large or cross-domain sites.
+- Translate for people: titles, schema, CTAs, trust signals, and number, date and currency formats. Review machine translations, because Google treats unreviewed output as a scaled content risk.
+
+## Backlinks
+
+Links are earned after launch, so plan for them without inventing any:
+
+- Create something worth linking to: free tools, original data and useful guides.
+- List honest opportunities for the owner: communities, roundups, tool directories and unlinked brand mentions.
+- Check what competitors earned links for, using Semrush or Ahrefs when available.
+- Keep exact-match anchors uncommon. Most natural anchors are the brand name or URL.
+- Skip paid links, link farms, private blog networks and mass directory submissions.
 
 ## Pages at scale
 
@@ -113,6 +201,19 @@ Use this for tool variants, directories, comparisons, locations and glossaries.
 - **Stronger data wins:** your own data beats user data, which beats licensed data, which beats public data.
 - **Rollout:** publish 50 to 100 pages, review a 5 to 10% sample, watch indexing for 2 to 4 weeks, then expand. Get the owner's approval before publishing more than 500.
 - **Risky patterns:** swapped city names, "[competitor] alternative" without real comparisons, and unreviewed AI pages. Google treats these as scaled content abuse.
+
+## Before and after each deploy
+
+SEO often breaks quietly during ordinary changes. `check-site` can compare two builds:
+
+```bash
+node <skill-dir>/scripts/check-site.mjs dist --save-baseline .seo-baseline.json
+node <skill-dir>/scripts/check-site.mjs dist --compare .seo-baseline.json
+```
+
+Save the baseline from the build before making changes, then compare afterwards. Removed pages, new `noindex` tags, changed canonicals and lost schema are errors. Title, description and `h1` changes are warnings to confirm.
+
+If traffic drops, first compare the dates with Google's confirmed updates on its Search Status Dashboard. A date overlap is a clue, not proof.
 
 ## After launch
 
